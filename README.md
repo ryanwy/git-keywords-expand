@@ -12,9 +12,11 @@ Keywords:　$Id$ $Author$ $Date$ $Revision$ $Header$
 usage:
 
 using hooks:
+
 1) just put the post-commit file under .git/hooks/, every time after your commit, the post-commit script is triggered, and it'll commit the version again and update the version information to your local files.
 
 using filters and hooks:
+
 1) put the whole folder .git_filter/ under your project
 2) add to .git.config:
 [filter "keywords_filter"]
