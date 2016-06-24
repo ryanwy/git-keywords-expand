@@ -1,20 +1,22 @@
 # git-keywords-expand
+
+## Description:
+
 Not like what we are setting keywords automatic replacement in SVN, Git doesn't own this magic. This small project is to implement  keywords substitution in GIT.
 
 Thanks to Git has the attributes filter and hooks, we can use them to realize it. 
 
-Note that: we can only keep the local files in working area getting the latest commit information. The files you commit to reposity will be always the second newest commit information. 
+*Note that: we can only keep the local files in working area getting the latest commit information. The files you commit to reposity will be always the second newest commit information. 
 
-You can keep consistency between your local working aera and the reposity. But this is based on what you accept the truth that you ignore the latest commit version.
+You can keep consistency between your local working aera and the reposity. But this is based on what you accept the truth that you ignore the latest commit version.*
 
 Keywords:　$Id$ $Author$ $Date$ $Revision$ $Header$
 
-----------------------------
-
-usage:
 
 
-using hooks:
+## usage:
+
+### using hooks:
 
 1) just put the post-commit file under .git/hooks/
 
@@ -22,9 +24,9 @@ using hooks:
 
 ######################
 
-using filters and hooks:
+### using filters and hooks:
 
-using clean command:
+#### using clean command:
 
 (every time you commit your file, the post-commit will be triggered to update your local files keywords)
 
@@ -47,9 +49,8 @@ using clean command:
 
 (if use it, you must change the name to post-commit)
 
-######################
 
-using smudge command:
+#### using smudge command:
 
 (every time when you finish your commit, hook script will be triggered, and update the local files keywords)
 
