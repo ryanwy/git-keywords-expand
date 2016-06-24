@@ -1,0 +1,126 @@
+#!/usr/bin/perl
+###########################################################################
+# @File : post-commit
+# @Author: ryanwy
+# @Mail: wangyan_ryan@163.com 
+# @Description: post commit script to replace keywords in files, when you 
+#      commit files, this script will be triggered and replace local files
+#      keywords, then commit the file again.
+# @Branch: origin/master https://github.com/ryanwy/git-keywords-expand.git
+############################################################################
+use strict;
+use warnings;
+use Cwd;
+
+exit main();
+
+
+sub main {
+    my $commit = `git show HEAD`;
+
+    my $pro_path = get_pro_path();  
+    if ( (length($pro_path) - rindex($pro_path, "/") -1) != 0 ) {
+        $pro_path .= "/";
+    }
+  
+    # 
+    my @versions = ($commit =~ /.*(special keywords replacement mark).*/gm);
+    my $version_cnt = @versions;
+    if( $version_cnt > 0 ) {
+        print "repeat commit!";
+        return 0;
+    }
+
+    my @files = ($commit =~ /diff --git a\/(.*)\s+b/gm); 
+    foreach my $file (@files) {
+        my $filepath = $pro_path.$file;
+        if( -e $filepath and -f $filepath ) {
+            set_smudge($filepath);
+            my $ret = `cd $pro_path && git add $filepath && git commit -m "special keywords replacement mark"`;
+            if ($?) {
+                print "rm and checkout file error, stop it.";
+                last;
+            }
+        } else {
+            print "file $filepath not exist.. please check";
+        }   
+    }
+
+}
+
+# get project path
+sub get_pro_path {
+    my $cur_path = getcwd;
+    my $pro_path = (split(/\.git/, $cur_path))[0];
+    return $pro_path if defined $pro_path;
+}
+
+# replace keywords in local files
+sub set_smudge {
+    my $filename = shift;
+    my ( $author, $usrname, $date, $rev, $filepath );
+
+    $author = `git log --pretty=format:"%an %ae" -1 -- $filename`;
+    $date = `git log --pretty=format:"%ad" -1 -- $filename`;
+    $rev = `git log --pretty=format:"%H" -1 -- $filename`;
+    $usrname = `git log --pretty=format:"%an" -1 -- $filename`;
+
+
+    if( not defined $author or
+        not defined $usrname or
+        not defined $date or
+        not defined $rev ) {
+        print "lack of information:  author/date/rev/usrname";
+        exit(1);
+    }
+
+    # if the log information is empty, we get log from remote branch
+    if( $author eq "" or
+        $date eq "" or
+        $rev eq "" or
+        $usrname eq ""
+        )
+    {
+        my $branch = `git branch`;
+        my $remote = `git remote`;
+        $branch =~ /^\*\s+(.*)/m;
+        $branch = $1;
+        $remote =~ /(.*)/m;
+        $remote = $1;
+        my $prefix = $remote.'/'.$branch;
+        $author = `git log $prefix --pretty=format:"%an %ae" -1 -- $filename`;
+        $date = `git log $prefix --pretty=format:"%ad" -1 -- $filename`;
+        $rev = `git log $prefix --pretty=format:"%H" -1 -- $filename`;
+        $usrname = `git log $prefix --pretty=format:"%an" -1 -- $filename`;
+    }
+
+
+    my @content;
+    # replace all marks
+    open( FILE, '<'.$filename ) or die( "open file error");
+    while(<FILE>) {
+        if(/\$Author[^\$]*\$/) {
+            s/\$Author[^\$]*\$/\$Author: $author \$/g;
+        }
+        if(/\$Id[^\$]*\$/) {
+            s/\$Id[^\$]*\$/\$Id: $filename $date  $usrname \$/g;
+        }
+        if(/\$Date[^\$]*\$/) {
+            s/\$Date[^\$]*\$/\$Date:   $date \$/g;
+        }
+        if(/\$Revision[^\$]*\$/) {
+            s/\$Revision[^\$]*\$/\$Revision: $rev \$/g;
+        }
+        if(/\$Header[^\$]*\$/) {
+            s/\$Header[^\$]*\$/\$Header: $filepath $rev $date $usrname \$/g;
+        }
+        push @content, $_;
+    }
+    close(FILE);
+    
+    open( FILE2, '>'.$filename ) or die( "open write error");
+    print FILE2 @content;
+    close(FILE2);
+    return 0;
+}
+
