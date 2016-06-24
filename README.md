@@ -6,7 +6,7 @@ Not like what we are setting keywords automatic replacement in SVN, Git doesn't 
 
 Thanks to Git has the attributes filter and hooks, we can use them to realize it. 
 
-** Note that: we can only keep the local files in working area getting the latest commit information. The files you commit to reposity will be always the second newest commit information.**   
+** Note that: we can only keep the local files in working area getting the latest commit information. The files you commit to reposity will be always the second newest commit information. **   
 ** You can keep consistency between your local working aera and the reposity. But this is based on what you accept the truth that you ignore the latest commit version. **
 
 Keywords:　$Id$ $Author$ $Date$ $Revision$ $Header$
