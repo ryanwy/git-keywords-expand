@@ -17,25 +17,59 @@ using hooks:
 
 1) just put the post-commit file under .git/hooks/
 
-(every time after your commit, the post-commit script is triggered, and it'll commit the version again and update the version information to your local files.)
+(every time after your commit, the post-commit script is triggered, and it'll commit the file again and update the version information to your local files.)
 
+--------------------------------------------
 
 using filters and hooks:
 
-1) put the whole folder .git_filter/ under your project
+-----
+using clean command:
 
-2) add to .git.config:
+(every time you commit your file, the post-commit will be triggered to update your local files keywords)
+
+1) put the whole folder .git_filter/ from filters/.git_filter/ under your project root path
+
+2) add to .git/config as what in file filters/config:
+
 [filter "keywords_filter"]
     clean = .git_filter/keywords_filter.pl -t clean -f %f
-    smudge = .git_filter/keywords_filter.pl -t smudge -f %f
+
 (You can choose one either clean or smudge)
 
-3) add to .gitattributes
+3) add to .gitattributes as what in file filters/.gitatrributes
+
 *.txt filter=test_filter
+
 (you can write your own file suffix you want to filter)
 
-4) put the post-commit file under .git/hooks/
+4) put the hooks/post-commit-clean-filter file under .git/hooks/
 
+(if use it, you must change the name to post-commit)
+
+
+----
+using smudge command:
+
+(every time when you finish your commit, hook script will be triggered, and update the local files keywords)
+
+
+1) put the whole folder .git_filter/ from filters/.git_filter/ under your project root path
+
+2) add to .git/config as what in file filters/config:
+
+[filter "keywords_filter"]
+    smudge = .git_filter/keywords_filter.pl -t smudge -f %f
+
+(You can choose one either clean or smudge)
+
+3) add to .gitattributes as what in file filters/.gitatrributes
+
+*.txt filter=test_filter
+
+(you can write your own file suffix you want to filter)
+
+4) put the hooks/post-commit file under .git/hooks/
 
 ------------------------------
 
