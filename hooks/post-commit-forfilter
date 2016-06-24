@@ -1,0 +1,52 @@
+#!/usr/bin/perl
+###########################################################################
+# @File : post-commit-forfilter
+# @Author: ryanwy
+# @Mail: wangyan_ryan@163.com
+# @Description: post commit script together with smudge filter, every time
+#       you commit your files, you trigger this script and rm and checkout 
+#       the file you just commit, the smduge trigger will replace your local
+#       files keywords.
+# @Branch: origin/master https://github.com/ryanwy/git-keywords-expand.git
+############################################################################
+
+use strict;
+use warnings;
+use Cwd;
+
+
+exit main();
+
+
+sub main {
+    my $commit = `git show HEAD`;
+
+    my $pro_path = get_pro_path();
+    if ( (length($pro_path) - rindex($pro_path, "/") -1) != 0 ) {
+        $pro_path .= "/";
+    }
+    
+    my @files = ($commit =~ /diff --git a\/(.*)\s+b/gm);
+    
+    # checkout after commit
+    foreach my $file (@files) {
+        my $filepath = $pro_path.$file;
+        if( -e $filepath and -f $filepath ) {
+            my $ret = `cd $pro_path && rm -f $filepath && git checkout -- $filepath`;
+            if ($?) {
+                print "rm and checkout file error, stop it.";
+                last;
+            }
+        } else {
+            print "file $filepath not exist.. please check";
+        }
+    }
+}
+
+# get project path
+sub get_pro_path {
+    my $cur_path = getcwd;
+    my $pro_path = (split(/\.git/, $cur_path))[0];
+    return $pro_path if defined $pro_path;
+}
+
