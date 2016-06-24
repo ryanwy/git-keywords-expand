@@ -1,0 +1,3 @@
+[filter "test_filter"]
+    clean = .git_filter/keywords_filter.pl -t clean -f %f
+    smudge = .git_filter/keywords_filter.pl -t smudge -f %f
