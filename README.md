@@ -9,8 +9,9 @@ You can keep consistency between your local working aera and the reposity. But t
 
 Keywords:　$Id$ $Author$ $Date$ $Revision$ $Header$
 
-usage:
+----------------------------
 
+usage:
 
 
 using hooks:
@@ -19,11 +20,10 @@ using hooks:
 
 (every time after your commit, the post-commit script is triggered, and it'll commit the file again and update the version information to your local files.)
 
---------------------------------------------
+######################
 
 using filters and hooks:
 
------
 using clean command:
 
 (every time you commit your file, the post-commit will be triggered to update your local files keywords)
@@ -47,8 +47,8 @@ using clean command:
 
 (if use it, you must change the name to post-commit)
 
+######################
 
-----
 using smudge command:
 
 (every time when you finish your commit, hook script will be triggered, and update the local files keywords)
