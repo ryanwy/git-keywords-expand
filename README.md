@@ -21,8 +21,6 @@ Keywords:　$Id$ $Author$ $Date$ $Revision$ $Header$
 
 (every time after your commit, the post-commit script is triggered, and it'll commit the file again and update the version information to your local files.)
 
-######################
-
 ### using filters and hooks:
 
 #### using clean command:
@@ -56,8 +54,7 @@ Keywords:　$Id$ $Author$ $Date$ $Revision$ $Header$
 (you can write your own file suffix you want to filter)  
 4. put the hooks/post-commit file under .git/hooks/
 
-------------------------------
-
+## 说明
 在SVN里我们可以设置关键字替换，来实现代码中$Revision$,$Author$等的自动替换。但是Git没有这个特性，Git自带的$Id$关键字，替换的blob对象，而不是commit对象，而且不像SVN的增量版本，我们看不出来这个版本是新版本还是旧版本。
 
 Git有filters和hooks特性可以帮助我们实现关键字替换，但是这种替换只能保证本地文件的版本最新，版本库中的版本永远都是上一个版本，这里的上一个版本指的是关键字替换版本，而不是实际上你要提交的更新。
