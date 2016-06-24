@@ -31,13 +31,10 @@ Keywords:　$Id$ $Author$ $Date$ $Revision$ $Header$
 
 1. put the whole folder .git_filter/ from filters/.git_filter/ under your project root path
 
-2. add to .git/config as what in file filters/config:
-
+2. add to .git/config as what in file filters/config:  
 [filter "keywords_filter"]
-    clean = .git_filter/keywords_filter.pl -t clean -f %f
-
+    clean = .git_filter/keywords_filter.pl -t clean -f %f  
 (You can choose one either clean or smudge)
-
 3. add to .gitattributes as what in file filters/.gitatrributes  
 *.txt filter=test_filter  
 (you can write your own file suffix you want to filter)
@@ -50,18 +47,13 @@ Keywords:　$Id$ $Author$ $Date$ $Revision$ $Header$
 (every time when you finish your commit, hook script will be triggered, and update the local files keywords)
 
 1. put the whole folder .git_filter/ from filters/.git_filter/ under your project root path
-2. add to .git/config as what in file filters/config:
-
+2. add to .git/config as what in file filters/config:  
 [filter "keywords_filter"]
-    smudge = .git_filter/keywords_filter.pl -t smudge -f %f
-
-(You can choose one either clean or smudge)
-
+    smudge = .git_filter/keywords_filter.pl -t smudge -f %f  
+(You can choose one either clean or smudge)  
 3. add to .gitattributes as what in file filters/.gitatrributes
-
 *.txt filter=test_filter  
-(you can write your own file suffix you want to filter)
-
+(you can write your own file suffix you want to filter)  
 4. put the hooks/post-commit file under .git/hooks/
 
 ------------------------------
