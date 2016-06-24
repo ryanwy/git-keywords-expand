@@ -6,8 +6,8 @@ Not like what we are setting keywords automatic replacement in SVN, Git doesn't 
 
 Thanks to Git has the attributes filter and hooks, we can use them to realize it. 
 
-** Note that: we can only keep the local files in working area getting the latest commit information. The files you commit to reposity will be always the second newest commit information.   
-You can keep consistency between your local working aera and the reposity. But this is based on what you accept the truth that you ignore the latest commit version. **
+** Note that: we can only keep the local files in working area getting the latest commit information. The files you commit to reposity will be always the second newest commit information.**   
+** You can keep consistency between your local working aera and the reposity. But this is based on what you accept the truth that you ignore the latest commit version. **
 
 Keywords:　$Id$ $Author$ $Date$ $Revision$ $Header$
 
@@ -17,7 +17,7 @@ Keywords:　$Id$ $Author$ $Date$ $Revision$ $Header$
 
 ### using hooks:
 
-1) just put the post-commit file under .git/hooks/
+1. just put the post-commit file under .git/hooks/
 
 (every time after your commit, the post-commit script is triggered, and it'll commit the file again and update the version information to your local files.)
 
@@ -29,47 +29,40 @@ Keywords:　$Id$ $Author$ $Date$ $Revision$ $Header$
 
 (every time you commit your file, the post-commit will be triggered to update your local files keywords)
 
-1) put the whole folder .git_filter/ from filters/.git_filter/ under your project root path
+1. put the whole folder .git_filter/ from filters/.git_filter/ under your project root path
 
-2) add to .git/config as what in file filters/config:
+2. add to .git/config as what in file filters/config:
 
 [filter "keywords_filter"]
     clean = .git_filter/keywords_filter.pl -t clean -f %f
 
 (You can choose one either clean or smudge)
 
-3) add to .gitattributes as what in file filters/.gitatrributes
-
-*.txt filter=test_filter
-
+3. add to .gitattributes as what in file filters/.gitatrributes  
+*.txt filter=test_filter  
 (you can write your own file suffix you want to filter)
 
-4) put the hooks/post-commit-clean-filter file under .git/hooks/
-
+4. put the hooks/post-commit-clean-filter file under .git/hooks/  
 (if use it, you must change the name to post-commit)
 
 
 #### using smudge command:
-
 (every time when you finish your commit, hook script will be triggered, and update the local files keywords)
 
-
-1) put the whole folder .git_filter/ from filters/.git_filter/ under your project root path
-
-2) add to .git/config as what in file filters/config:
+1. put the whole folder .git_filter/ from filters/.git_filter/ under your project root path
+2. add to .git/config as what in file filters/config:
 
 [filter "keywords_filter"]
     smudge = .git_filter/keywords_filter.pl -t smudge -f %f
 
 (You can choose one either clean or smudge)
 
-3) add to .gitattributes as what in file filters/.gitatrributes
+3. add to .gitattributes as what in file filters/.gitatrributes
 
-*.txt filter=test_filter
-
+*.txt filter=test_filter  
 (you can write your own file suffix you want to filter)
 
-4) put the hooks/post-commit file under .git/hooks/
+4. put the hooks/post-commit file under .git/hooks/
 
 ------------------------------
 
